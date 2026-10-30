@@ -4,7 +4,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_default_background"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -46,7 +45,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
         android:minHeight="48dp"
-        android:hint="@string/input_hint"
+        android:backgroundTint="@color/color_header_background"
         android:imeOptions="actionGo"
         android:importantForAutofill="no"
         android:inputType="textCapWords|textNoSuggestions"

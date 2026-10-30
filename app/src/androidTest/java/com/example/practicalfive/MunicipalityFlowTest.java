@@ -16,11 +16,14 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
+import androidx.core.graphics.ColorUtils;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -90,6 +93,33 @@ public class MunicipalityFlowTest {
                     assertEquals(expected.getConstantState(), image.getDrawable().getConstantState());
                 });
                 onView(withId(R.id.visit_site)).check(matches(isDisplayed()));
+            }
+        }
+    }
+
+    @Test
+    public void eachCityUsesItsNamedColorsWithReadableContrast() {
+        String[] names = {"Beijing", "Shanghai", "Chongqing", "Tianjin"};
+        int[] colors = {R.color.municipality_beijing, R.color.municipality_shanghai,
+                R.color.municipality_chongqing, R.color.municipality_tianjin};
+        for (int index = 0; index < names.length; index++) {
+            final int city = index;
+            try (ActivityScenario<Municipality> scenario = openCity(names[city])) {
+                scenario.onActivity(activity -> {
+                    TextView title = activity.findViewById(R.id.municipality_name);
+                    TextView information = activity.findViewById(R.id.municipality_information);
+                    Button visitSite = activity.findViewById(R.id.visit_site);
+                    int expectedColor = activity.getColor(colors[city]);
+                    int titleBackground = ((ColorDrawable) title.getBackground()).getColor();
+                    int informationBackground = ((ColorDrawable) information.getBackground()).getColor();
+                    assertEquals(expectedColor, titleBackground);
+                    assertEquals(expectedColor, information.getCurrentTextColor());
+                    assertNotNull(visitSite.getBackgroundTintList());
+                    assertEquals(expectedColor, visitSite.getBackgroundTintList().getDefaultColor());
+                    assertTrue(ColorUtils.calculateContrast(title.getCurrentTextColor(), titleBackground) >= 4.5);
+                    assertTrue(ColorUtils.calculateContrast(information.getCurrentTextColor(), informationBackground) >= 4.5);
+                    assertTrue(ColorUtils.calculateContrast(visitSite.getCurrentTextColor(), expectedColor) >= 4.5);
+                });
             }
         }
     }

@@ -4,8 +4,8 @@
     <string name="main_title">Municipalities in China</string>
     <string name="map_description">Map showing the four municipalities of China</string>
     <string name="input_label">I want to know about:</string>
-    <string name="input_hint">e.g. Beijing</string>
     <string name="invalid_municipality">Enter Beijing, Shanghai, Tianjin or Chongqing.</string>
     <string name="city_image_description">A view of %1$s</string>
+    <string name="city_image">Municipality photograph</string>
     <string name="visit_site">Visit site</string>
 </resources>

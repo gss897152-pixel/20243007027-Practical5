@@ -4,7 +4,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_default_background"
     android:orientation="vertical"
     tools:context=".Municipality">
 
@@ -26,6 +25,7 @@
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:layout_weight="1"
+        android:contentDescription="@string/city_image"
         android:scaleType="fitCenter"
         tools:src="@drawable/beijing" />
 
@@ -52,7 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:enabled="false"
         android:minHeight="48dp"
         android:text="@string/visit_site"
         android:textAllCaps="false" />
