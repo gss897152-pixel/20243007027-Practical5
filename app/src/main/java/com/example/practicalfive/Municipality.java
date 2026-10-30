@@ -1,6 +1,9 @@
 package com.example.practicalfive;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,26 +47,31 @@ public class Municipality extends AppCompatActivity {
         int summaryIndex;
         int imageResource;
         int colorResource;
+        int websiteResource;
         switch (name) {
             case "Beijing":
                 summaryIndex = 0;
                 imageResource = R.drawable.beijing;
                 colorResource = R.color.municipality_beijing;
+                websiteResource = R.string.website_beijing;
                 break;
             case "Shanghai":
                 summaryIndex = 1;
                 imageResource = R.drawable.shanghai;
                 colorResource = R.color.municipality_shanghai;
+                websiteResource = R.string.website_shanghai;
                 break;
             case "Chongqing":
                 summaryIndex = 2;
                 imageResource = R.drawable.chongqing;
                 colorResource = R.color.municipality_chongqing;
+                websiteResource = R.string.website_chongqing;
                 break;
             case "Tianjin":
                 summaryIndex = 3;
                 imageResource = R.drawable.tianjin;
                 colorResource = R.color.municipality_tianjin;
+                websiteResource = R.string.website_tianjin;
                 break;
             default:
                 finish();
@@ -90,5 +98,13 @@ public class Municipality extends AppCompatActivity {
         information.setBackgroundColor(informationBackground);
         visitSite.setBackgroundTintList(ColorStateList.valueOf(cityColor));
         visitSite.setTextColor(contrastingText);
+        visitSite.setOnClickListener(view -> {
+            Intent website = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(websiteResource)));
+            try {
+                startActivity(website);
+            } catch (ActivityNotFoundException exception) {
+                Toast.makeText(this, R.string.no_website_application, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

@@ -2,6 +2,7 @@ package com.example.practicalfive;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
@@ -10,6 +11,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
@@ -26,10 +28,13 @@ import androidx.lifecycle.Lifecycle;
 import androidx.core.graphics.ColorUtils;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.SdkSuppress;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @RunWith(AndroidJUnit4.class)
 public class MunicipalityFlowTest {
@@ -121,6 +126,45 @@ public class MunicipalityFlowTest {
                     assertTrue(ColorUtils.calculateContrast(visitSite.getCurrentTextColor(), expectedColor) >= 4.5);
                 });
             }
+        }
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = 26)
+    public void visitSiteSendsAnImplicitIntentForEachOfficialWebsite() {
+        String[][] cities = {
+                {"Beijing", "https://english.beijing.gov.cn/"},
+                {"Shanghai", "https://english.shanghai.gov.cn/"},
+                {"Chongqing", "https://english.cq.gov.cn/"},
+                {"Tianjin", "https://en.tj.gov.cn/"}
+        };
+        AtomicReference<Intent> openedWebsite = new AtomicReference<>();
+        Instrumentation.ActivityMonitor monitor = new Instrumentation.ActivityMonitor() {
+            @Override
+            public Instrumentation.ActivityResult onStartActivity(Intent intent) {
+                if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+                    openedWebsite.set(new Intent(intent));
+                    return new Instrumentation.ActivityResult(Activity.RESULT_OK, null);
+                }
+                return null;
+            }
+        };
+        instrumentation.addMonitor(monitor);
+        try {
+            for (String[] city : cities) {
+                openedWebsite.set(null);
+                try (ActivityScenario<Municipality> scenario = openCity(city[0])) {
+                    onView(withId(R.id.visit_site)).perform(click());
+                    Intent intent = openedWebsite.get();
+                    assertNotNull("No website intent for " + city[0], intent);
+                    assertEquals(Intent.ACTION_VIEW, intent.getAction());
+                    assertNull("Website intent should be implicit", intent.getComponent());
+                    assertNull(intent.getPackage());
+                    assertEquals(city[1], intent.getDataString());
+                }
+            }
+        } finally {
+            instrumentation.removeMonitor(monitor);
         }
     }
 
