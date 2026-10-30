@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-30",
+  "device": {
+    "model": "Medium Phone AVD",
+    "api": 35,
+    "resolution": "1080x2400",
+    "dpi": 420
+  },
+  "unit_tests": {
+    "name": "com.example.practicalfive.TextProcessorTest",
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "timestamp": "2026-10-30T15:16:55.574Z"
+  },
+  "device_tests": {
+    "name": "com.example.practicalfive.MunicipalityFlowTest",
+    "tests": "7",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "timestamp": "2026-10-30T15:18:31"
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": {
+      "AndroidGradlePluginVersion": 1,
+      "GradleDependency": 6,
+      "IconLocation": 5
+    }
+  },
+  "debug_build": "passed",
+  "release_build": "passed; unsigned output",
+  "official_website_checks": [
+    {
+      "municipality": "Beijing",
+      "url": "https://english.beijing.gov.cn/",
+      "page_title": "BEIJING CHINA-International Web Portal of Beijing",
+      "external_application": "org.chromium.webview_shell"
+    },
+    {
+      "municipality": "Shanghai",
+      "url": "https://english.shanghai.gov.cn/",
+      "page_title": "SHANGHAI CHINA-International Services Shanghai",
+      "external_application": "org.chromium.webview_shell"
+    },
+    {
+      "municipality": "Chongqing",
+      "url": "https://english.cq.gov.cn/",
+      "page_title": "CHONGQING · CHINA",
+      "external_application": "org.chromium.webview_shell"
+    },
+    {
+      "municipality": "Tianjin",
+      "url": "https://en.tj.gov.cn/",
+      "page_title": "Tianjin Municipal People&#39;s Government",
+      "external_application": "org.chromium.webview_shell"
+    }
+  ],
+  "no_browser_check": {
+    "https_handler": "No activity found",
+    "result": "Detail remains open; no ActivityNotFoundException crash",
+    "browser_restored": true
+  }
+}

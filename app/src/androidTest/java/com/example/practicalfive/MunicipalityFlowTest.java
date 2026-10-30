@@ -169,6 +169,17 @@ public class MunicipalityFlowTest {
     }
 
     @Test
+    public void detailReprocessesInputAndRetainsTheCityAfterRecreation() {
+        try (ActivityScenario<Municipality> scenario = openCity("  ChOnGqInG  ")) {
+            onView(withId(R.id.municipality_name)).check(matches(withText("Chongqing")));
+            scenario.recreate();
+            assertEquals(Lifecycle.State.RESUMED, scenario.getState());
+            onView(withId(R.id.municipality_name)).check(matches(withText("Chongqing")));
+            onView(withId(R.id.visit_site)).check(matches(isDisplayed()));
+        }
+    }
+
+    @Test
     public void missingOrInvalidIntentDataClosesSafely() {
         for (String name : new String[]{null, "", "   ", "Guangzhou"}) {
             try (ActivityScenario<Municipality> scenario = openCity(name)) {
